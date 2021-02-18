@@ -22,6 +22,9 @@ class PFMarshmallowSwagger():
         self.blue_print.add_url_rule("/pf-swagger-ui", "pf-swagger-ui", self.swagger_ui)
         app.register_blueprint(self.blue_print)
 
+    def update_swagger_details(self, title = "PF Marshmallow Swagger", version="1.0.0"):
+        self.__api_specification.title = title
+        self.__api_specification.version = version
 
     def swagger_json(self):
         return self.__api_specification.to_dict()
