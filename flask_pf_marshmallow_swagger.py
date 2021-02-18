@@ -1,7 +1,15 @@
 from flask import Blueprint, render_template
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
 
 class PFMarshmallowSwagger():
 
+    __api_specification = APISpec(
+        title="Swagger Petstore",
+        version="1.0.0",
+        openapi_version="3.0.2",
+        plugins=[MarshmallowPlugin()]
+    )
 
     def __init__(self, app=None):
         self.app = app
@@ -16,7 +24,7 @@ class PFMarshmallowSwagger():
 
 
     def swagger_json(self):
-        return {"key": "value"}
+        return self.__api_specification.to_dict()
 
     def swagger_ui(self):
         return render_template('pf-swagger-ui.html')
