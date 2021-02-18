@@ -5,7 +5,7 @@ from apispec.ext.marshmallow import MarshmallowPlugin
 class PFMarshmallowSwagger():
 
     __api_specification = APISpec(
-        title="Swagger Petstore",
+        title="PF Marshmallow Swagger",
         version="1.0.0",
         openapi_version="3.0.2",
         plugins=[MarshmallowPlugin()]
