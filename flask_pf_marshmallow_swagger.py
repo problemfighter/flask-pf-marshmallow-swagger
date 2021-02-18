@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
+from swagger.actions_to_swagger import ActionsToSwagger
 
 class PFMarshmallowSwagger():
 
@@ -27,6 +28,8 @@ class PFMarshmallowSwagger():
         self.__api_specification.version = version
 
     def swagger_json(self):
+        actions_to_swagger = ActionsToSwagger(self.app, self.__api_specification)
+        actions_to_swagger.process()
         return self.__api_specification.to_dict()
 
     def swagger_ui(self):
