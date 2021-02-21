@@ -1,0 +1,14 @@
+
+create_update
+create_update_bulk
+delete
+delete_bulk
+
+details
+paginated_list
+list
+
+
+
+* Inspiration
+** flask_swagger.py
