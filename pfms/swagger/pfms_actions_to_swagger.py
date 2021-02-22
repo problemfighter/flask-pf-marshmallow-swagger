@@ -1,7 +1,7 @@
-import inspect
 import types
 
-class ActionsToSwagger():
+
+class ActionsToSwagger:
 
     __ignore_verbs = {"HEAD", "OPTIONS"}
 
@@ -15,6 +15,9 @@ class ActionsToSwagger():
             methods.append(method)
         return methods
 
+    def __get_path_param(self, rule):
+        pass
+
     def __process_action_decorator(self, definition, rule):
         methods = self.__get_action_methods(rule)
         print(methods)
@@ -27,7 +30,6 @@ class ActionsToSwagger():
                 if function_name and function_name == "pfms_swagger_def":
                     definition = endpoint(pfms_definition=True)
                     self.__process_action_decorator(definition, rule)
-
 
     def process(self):
         self.__process_url()

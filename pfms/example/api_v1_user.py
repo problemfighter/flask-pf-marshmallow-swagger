@@ -1,23 +1,34 @@
 from flask import Blueprint
-from pfms.swagger.pfms_swagger_decorator import create_update
+from pfms.swagger.pfms_swagger_decorator import request_response
 from pfms.example.dto.details import Details
 
 user_blueprint = Blueprint('user_blueprint', __name__, url_prefix="/api/v1/user")
 
 
-
-@user_blueprint.route("/create", methods=["POST"])
-@create_update(request_body=Details, response_obj=Details)
+@user_blueprint.route("/create", methods=["POST", "GET"])
+@request_response(request_body=Details, response_obj=Details)
 def create():
     return "Created"
+
+
+@user_blueprint.route("/details/<int:id>", methods=["GET"])
+@request_response(request_body=Details, response_obj=Details)
+def details(id):
+    return "Response " + str(id)
+
+
+@user_blueprint.route("/", methods=["GET"])
+@request_response(request_body=Details, response_obj=Details)
+def bismillah():
+    return "Response "
 
 # @user_blueprint.route("/update", methods=["POST"])
 # def update():
 #     pass
 #
-# @user_blueprint.route("/details/<int:id>", methods=["GET"])
-# def details(id):
-#     pass
+
+
+
 #
 # @user_blueprint.route("/list", methods=["GET"])
 # def list():
