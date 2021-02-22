@@ -1,12 +1,13 @@
 from flask import Blueprint
 from pfms.swagger.pfms_swagger_decorator import create_update
+from pfms.example.dto.details import Details
 
 user_blueprint = Blueprint('user_blueprint', __name__, url_prefix="/api/v1/user")
 
 
 
 @user_blueprint.route("/create", methods=["POST"])
-@create_update(request_obj="something", response_obj="inResponse")
+@create_update(request_body=Details, response_obj=Details)
 def create():
     return "Created"
 
