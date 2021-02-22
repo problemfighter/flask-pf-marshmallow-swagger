@@ -18,6 +18,7 @@ def __process_request_response(type, function, request_body, response_obj, query
 
 def request_response(request_body, response_obj, error_details=True, query_param=None, request_type='application/json', response_type='application/json'):
     def decorator(function):
+        function.__pfms__ = "PFMS"
         @wraps(function)
         def pfms_swagger_def(*args, **kwargs):
             return __process_request_response(CREATE_UPDATE, function, request_body, response_obj, error_details, query_param, request_type, response_type, *args, **kwargs)
