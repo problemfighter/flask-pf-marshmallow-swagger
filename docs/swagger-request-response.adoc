@@ -9,6 +9,15 @@ paginated_list
 list
 
 
+== Request Response Objects
+
+* request_body
+* response_obj
+* query_param [('name', 'type', required)] type = default string, required default False
+
+* error_details=True
+* request_type = 'application/json'
+* response_type = 'application/json'
 
 * Inspiration
 ** flask_swagger.py
