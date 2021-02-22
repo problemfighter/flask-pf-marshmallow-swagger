@@ -21,7 +21,7 @@ class ActionsToSwagger:
         methods = self.__get_action_methods(rule)
         print(methods)
 
-    def has_pfms_decorator(self, endpoint):
+    def __has_pfms_decorator(self, endpoint):
         try:
             pfms = endpoint.__pfms__
             if pfms == "PFMS":
@@ -34,7 +34,7 @@ class ActionsToSwagger:
             endpoint = self.base_app.view_functions[rule.endpoint]
             if isinstance(endpoint, types.FunctionType):
                 function_name = endpoint.__name__
-                if function_name and self.has_pfms_decorator(endpoint):
+                if function_name and self.__has_pfms_decorator(endpoint):
                     definition = endpoint(pfms_definition=True)
                     self.__process_action_decorator(definition, rule)
 
