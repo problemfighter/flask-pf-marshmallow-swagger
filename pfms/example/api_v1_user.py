@@ -11,9 +11,9 @@ def create():
     return "Created"
 
 
-@user_blueprint.route("/details/<int:id>", methods=["GET"])
+@user_blueprint.route("/details/<int:id>/<string:name>", methods=["GET"])
 @request_response(request_body=Details, response_obj=Details)
-def details(id):
+def details(id, name):
     return "Response " + str(id)
 
 
