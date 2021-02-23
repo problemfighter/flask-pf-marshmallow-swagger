@@ -1,10 +1,12 @@
 import types
 
+from pfms.swagger.pfms_definition import PFMSDefinition
+
 
 class ActionsToSwagger:
-
     _ignore_verbs = {"HEAD", "OPTIONS"}
-    _swagger_data_type = {"string": "string", "int": "integer", "float": "number", "path": "string", "any": "string", "uuid": "string"}
+    _swagger_data_type = {"string": "string", "int": "integer", "float": "number", "path": "string", "any": "string",
+                          "uuid": "string"}
 
     def __init__(self, base_app, apispec):
         self.base_app = base_app
@@ -16,39 +18,47 @@ class ActionsToSwagger:
             methods.append(method)
         return methods
 
-    def  _extract_url_to_params(self, url):
+    def _extract_url_to_params(self, url):
         url_map = {}
         if url:
             fragments = url.split("/")
             for fragment in fragments:
                 if fragment and fragment.startswith("<"):
+                    actual_fragment = fragment
                     type_input = fragment.replace("<", "").replace(">", "").split(":")
                     if len(type_input) == 2 and (type_input[0] in self._swagger_data_type):
-                        url_map[type_input[1]] = self._swagger_data_type[type_input[0]]
+                        param_name = type_input[1]
+                        url_map[param_name] = self._swagger_data_type[type_input[0]]
                     else:
                         url_map[type_input[0]] = "string"
-        return url_map
+                        param_name = type_input[0]
+                    url = url.replace(actual_fragment, "{" + param_name + "}")
+        return {"url": url, "url_map": url_map}
 
-    def _get_path_param(self, rule):
+    def _get_path_param(self, definition: PFMSDefinition, rule) -> PFMSDefinition:
         path = []
-        data_type = self._extract_url_to_params(rule.rule)
+        url_and_data_type = self._extract_url_to_params(rule.rule)
+        data_type = url_and_data_type['url_map']
         for param in rule.arguments:
             if param in data_type:
                 path.append((param, data_type[param], True))
-        return path
+        definition.url = url_and_data_type['url']
+        definition.path_params = path
+        return definition
 
-    def _process_action_decorator(self, definition, rule):
-        methods = self._get_action_methods(rule)
-        path_param = self._get_path_param(rule)
-        print(methods)
+    def _process_action_decorator(self, definition: PFMSDefinition, rule):
+        definition.methods = self._get_action_methods(rule)
+        definition = self._get_path_param(definition, rule)
+        print(definition)
 
-    def _has_pfms_decorator(self, endpoint):
+    def _has_pfms_decorator(self, endpoint) -> bool:
         try:
             pfms = endpoint.__pfms__
             if pfms == "PFMS":
                 return True
         except:
             return False
+        return False
 
     def _process_url(self):
         for rule in self.base_app.url_map.iter_rules():

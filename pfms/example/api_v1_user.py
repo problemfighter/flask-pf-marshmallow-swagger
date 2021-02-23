@@ -1,24 +1,24 @@
 from flask import Blueprint
-from pfms.swagger.pfms_swagger_decorator import request_response
+from pfms.swagger.pfms_swagger_decorator import request_response, create, request_response_list
 from pfms.example.dto.details import Details
 
 user_blueprint = Blueprint('user_blueprint', __name__, url_prefix="/api/v1/user")
 
 
 @user_blueprint.route("/create", methods=["POST", "GET"])
-@request_response(request_body=Details, response_obj=Details)
+@create(request_body=Details, response_obj=Details)
 def create():
     return "Created"
 
 
 @user_blueprint.route("/details/<int:id>/<string:name>", methods=["GET"])
-@request_response(request_body=Details, response_obj=Details)
+@request_response_list(request_body=Details, response_obj=Details)
 def details(id, name):
     return "Response " + str(id)
 
 
 @user_blueprint.route("/", methods=["GET"])
-@request_response(request_body=Details, response_obj=Details)
+@request_response_list(request_body=Details, response_obj=Details)
 def bismillah():
     return "Response "
 

@@ -1,26 +1,37 @@
 from functools import wraps
-from pfms.swagger.pfms_swagger_cons import CREATE_UPDATE
+
+from pfms.swagger.pfms_definition import PFMSDefinition
+from pfms.swagger.pfms_swagger_cons import CREATE_UPDATE, LIST, CREATE
 
 
-def __process_request_response(type, function, request_body, response_obj, query_param=None, error_details=True, request_type='application/json', response_type='application/json', *args, **kwargs):
-    if 'pfms_definition' in kwargs and kwargs['pfms_definition']:
-        return {
-            "request_body": request_body,
-            "response_obj": response_obj,
-            "response_type": response_type,
-            "request_type": request_type,
-            "error_details": error_details,
-            "query_param": query_param,
-            "type": type
-        }
-    return function(*args, **kwargs)
-
-
-def request_response(request_body, response_obj, error_details=True, query_param=None, request_type='application/json', response_type='application/json'):
+def request_response(rr_type,
+        request_body, response_obj, query_param=None,
+        error_details=True, request_type='application/json',
+        response_type='application/json'):
     def decorator(function):
         function.__pfms__ = "PFMS"
+
         @wraps(function)
         def pfms_swagger_def(*args, **kwargs):
-            return __process_request_response(CREATE_UPDATE, function, request_body, response_obj, error_details, query_param, request_type, response_type, *args, **kwargs)
+            if 'pfms_definition' in kwargs and kwargs['pfms_definition']:
+                pfms_definition = PFMSDefinition()
+                pfms_definition.request_body = request_body
+                pfms_definition.response_obj = response_obj
+                pfms_definition.response_type = response_type
+                pfms_definition.error_details = error_details
+                pfms_definition.query_param = query_param
+                pfms_definition.rr_type = rr_type
+                pfms_definition.request_type = request_type
+                return pfms_definition
+            return function(*args, **kwargs)
         return pfms_swagger_def
     return decorator
+
+
+def request_response_list(request_body, response_obj):
+    return request_response(LIST, request_body, response_obj)
+
+
+def create(request_body, response_obj):
+    return request_response(CREATE, request_body, response_obj)
+
