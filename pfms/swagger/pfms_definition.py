@@ -1,7 +1,6 @@
 
 class PFMSDefinition:
-
-    url = None
+    url: str = None
     path_params = None
     request_body = None
     response_obj = None
