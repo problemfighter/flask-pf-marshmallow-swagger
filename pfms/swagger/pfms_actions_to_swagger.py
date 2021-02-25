@@ -16,6 +16,7 @@ class ActionsToSwagger:
         self.base_app = base_app
         self._specification = apispec
         self._definition_to_swagger = PFMSDefinitionToSwagger(apispec)
+        self._definition_to_swagger.init_default_things()
 
     def _get_action_methods(self, rule):
         methods = []

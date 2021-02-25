@@ -13,3 +13,6 @@ class PFMSDefinition:
     rr_type = None
     methods = []
 
+    response_component: str = None
+    request_component: str = None
+
