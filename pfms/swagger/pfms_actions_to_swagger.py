@@ -1,16 +1,21 @@
 import types
 
+from apispec import APISpec
 from pfms.swagger.pfms_definition import PFMSDefinition
+from pfms.swagger.pfms_definition_to_swagger import PFMSDefinitionToSwagger
 
 
 class ActionsToSwagger:
+    _specification: APISpec
+    _definition_to_swagger: PFMSDefinitionToSwagger
     _ignore_verbs = {"HEAD", "OPTIONS"}
     _swagger_data_type = {"string": "string", "int": "integer", "float": "number", "path": "string", "any": "string",
                           "uuid": "string"}
 
-    def __init__(self, base_app, apispec):
+    def __init__(self, base_app, apispec: APISpec):
         self.base_app = base_app
-        self.apispec = apispec
+        self._specification = apispec
+        self._definition_to_swagger = PFMSDefinitionToSwagger(apispec)
 
     def _get_action_methods(self, rule):
         methods = []
@@ -49,6 +54,7 @@ class ActionsToSwagger:
     def _process_action_decorator(self, definition: PFMSDefinition, rule):
         definition.methods = self._get_action_methods(rule)
         definition = self._get_path_param(definition, rule)
+        self._definition_to_swagger.process(definition)
         print(definition)
 
     def _has_pfms_decorator(self, endpoint) -> bool:

@@ -1,2 +1,6 @@
 SUCCESS = "success"
 ERROR = "error"
+
+
+SUCCESS_CODE = 2200
+ERROR_CODE = 5100

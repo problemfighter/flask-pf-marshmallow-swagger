@@ -5,7 +5,7 @@ from pfms.swagger.pfms_actions_to_swagger import ActionsToSwagger
 
 class PFMarshmallowSwagger():
 
-    __api_specification = APISpec(
+    _api_specification = APISpec(
         title="PF Marshmallow Swagger",
         version="1.0.0",
         openapi_version="3.0.2",
@@ -23,14 +23,14 @@ class PFMarshmallowSwagger():
         self.blue_print.add_url_rule("/pf-swagger-ui", "pf-swagger-ui", self.swagger_ui)
         app.register_blueprint(self.blue_print)
 
-    def update_swagger_details(self, title = "PF Marshmallow Swagger", version="1.0.0"):
-        self.__api_specification.title = title
-        self.__api_specification.version = version
+    def update_swagger_details(self, title="PF Marshmallow Swagger", version="1.0.0"):
+        self._api_specification.title = title
+        self._api_specification.version = version
 
     def swagger_json(self):
-        actions_to_swagger = ActionsToSwagger(self.app, self.__api_specification)
+        actions_to_swagger = ActionsToSwagger(self.app, self._api_specification)
         actions_to_swagger.process()
-        return self.__api_specification.to_dict()
+        return self._api_specification.to_dict()
 
     def swagger_ui(self):
         return render_template('pf-swagger-ui.html')
