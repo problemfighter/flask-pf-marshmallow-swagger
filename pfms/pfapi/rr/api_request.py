@@ -1,11 +1,15 @@
-from pfms.pfapi.rr.base_request import BaseRequest
+from marshmallow import Schema, fields
 
 
 def single_request(data):
-    sr = BaseRequest(data)
+    sr = Schema.from_dict({
+        "data": fields.Nested(data)
+    })
     return sr
 
 
 def bulk_request(data):
-    br = BaseRequest(data, True)
+    br = Schema.from_dict({
+        "data": fields.Nested(data)
+    })
     return br
