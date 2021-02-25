@@ -10,6 +10,6 @@ def single_request(data):
 
 def bulk_request(data):
     br = Schema.from_dict({
-        "data": fields.Nested(data)
+        "data": fields.Nested(data, many=True)
     })
     return br
