@@ -31,6 +31,20 @@ def get_schema_def_ref(ref, s_type=None):
     return {"$ref": get_component_schemas_link(ref)}
 
 
+def get_request_body(definition: PFMSDefinition, is_bulk=False):
+    s_type = None
+    if is_bulk:
+        s_type = ARRAY
+    return {
+        "required": True,
+        "content": {
+            definition.response_type: {
+                "schema": get_schema_def_ref(definition.request_component, s_type)
+            }
+        }
+    }
+
+
 def get_response(definition: PFMSDefinition, http_code=200):
     return {
         http_code: {

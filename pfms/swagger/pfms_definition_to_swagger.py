@@ -5,7 +5,7 @@ from pfms.pfapi.rr.api_response import data_response
 from pfms.pfapi.rr.base_response import MessageResponse, ErrorResponse
 from pfms.swagger.pfms_definition import PFMSDefinition
 from pfms.common.pfms_util import get_random_string
-from pfms.swagger.pfms_swagger_schemas import get_parameter, IN_QUERY, IN_PATH
+from pfms.swagger.pfms_swagger_schemas import get_parameter, IN_QUERY, IN_PATH, get_request_body
 
 
 class PFMSDefinitionToSwagger:
@@ -30,14 +30,19 @@ class PFMSDefinitionToSwagger:
         definition.request_component = "Req" + component_code
         definition.response_component = "Res" + component_code
 
-    def _is_bulk_type(self, content_type: str):
+    def _is_bulk_request(self, content_type: str):
         if content_type.startswith("BULK"):
+            return True
+        return False
+
+    def _is_list_response(self, content_type: str):
+        if content_type.endswith("LIST"):
             return True
         return False
 
     def add_request_response_schema(self, definition: PFMSDefinition):
         if definition.request_body:
-            if self._is_bulk_type(definition.request_type):
+            if self._is_bulk_request(definition.request_type):
                 req = bulk_request(definition.request_body)
             else:
                 req = single_request(definition.request_body)
@@ -72,7 +77,29 @@ class PFMSDefinitionToSwagger:
             return parameters
         return None
 
+    def get_request_body(self, definition: PFMSDefinition):
+        if definition.request_body:
+            return get_request_body(definition, self._is_bulk_request(definition.request_type))
+        return None
+
+    def get_responses(self, definition: PFMSDefinition):
+        if definition.response_obj:
+            print("--")
+        return None
+
     def get_operations(self, definition: PFMSDefinition):
+        operations = {}
+        for method in definition.methods:
+            request_body = self.get_request_body(definition)
+            responses = self.get_responses(definition)
+            method = method.lower()
+            operations[method] = {}
+            if request_body:
+                operations[method]["requestBody"] = request_body
+            if responses:
+                operations[method]["responses"] = responses
+        if len(operations):
+            return operations
         return None
 
     def assemble(self, definition: PFMSDefinition):
