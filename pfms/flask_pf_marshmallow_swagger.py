@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
-from pfms.swagger.pfms_actions_to_swagger import ActionsToSwagger
+from pfms.swagger.pfms_actions_to_definition import ActionsToSwagger
 
 class PFMarshmallowSwagger():
 

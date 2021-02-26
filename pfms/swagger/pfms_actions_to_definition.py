@@ -52,11 +52,25 @@ class ActionsToSwagger:
         definition.path_params = path
         return definition
 
+    def _get_default_tag_name(self, definition: PFMSDefinition, rule):
+        endpoint_name = rule.endpoint
+        end = endpoint_name.find(".")
+        total = len(endpoint_name)
+        definition.tags = []
+        if end != -1 and total > end:
+            endpoint_name = endpoint_name[0:end]
+            endpoint_name = endpoint_name.replace("_", " ")
+            endpoint_name = endpoint_name.title()
+            definition.tags.append(endpoint_name)
+        else:
+            definition.tags.append("Common")
+
+
     def _process_action_decorator(self, definition: PFMSDefinition, rule):
-        definition.methods = self._get_action_methods(rule)
         definition = self._get_path_param(definition, rule)
+        definition.methods = self._get_action_methods(rule)
+        self._get_default_tag_name(definition, rule)
         self._definition_to_swagger.process(definition)
-        print(definition)
 
     def _has_pfms_decorator(self, endpoint) -> bool:
         try:

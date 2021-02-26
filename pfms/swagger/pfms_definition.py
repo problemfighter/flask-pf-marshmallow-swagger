@@ -12,6 +12,7 @@ class PFMSDefinition:
     error_details = None
     rr_type = None
     methods = []
+    tags = []
 
     response_component: str = None
     request_component: str = None

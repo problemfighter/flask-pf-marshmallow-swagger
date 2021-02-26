@@ -98,6 +98,8 @@ class PFMSDefinitionToSwagger:
                 operations[method]["requestBody"] = request_body
             if responses:
                 operations[method]["responses"] = responses
+            if len(definition.tags) != 0:
+                operations[method]["tags"] = definition.tags
         if len(operations):
             return operations
         return None
@@ -112,5 +114,4 @@ class PFMSDefinitionToSwagger:
     def process(self, definition: PFMSDefinition):
         self.pre_process_definition(definition)
         self.add_request_response_schema(definition)
-        print("xyz")
         self.assemble(definition)
