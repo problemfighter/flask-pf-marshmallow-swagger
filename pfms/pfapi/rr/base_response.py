@@ -12,4 +12,4 @@ class MessageResponse(BaseResponse):
 
 
 class ErrorResponse(MessageResponse):
-    error = fields.String()
+    error = fields.Dict(keys=fields.String(), values=fields.String())

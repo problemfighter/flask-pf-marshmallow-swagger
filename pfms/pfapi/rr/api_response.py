@@ -7,6 +7,10 @@ def data_response(data, status=SUCCESS):
     return bulk_data_response(data, status, False)
 
 
+def bulk_success_data_response(data):
+    return bulk_data_response(data)
+
+
 def bulk_data_response(data, status=SUCCESS, many=True):
     dr = DataResponse().set_data(data, many)
     dr.status = status

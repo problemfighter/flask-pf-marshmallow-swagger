@@ -1,4 +1,5 @@
 from pfms.swagger.pfms_definition import PFMSDefinition
+from pfms.swagger.pfms_swagger_cons import ERROR_DETAILS_RESPONSE, MESSAGE_RESPONSE
 
 IN_PATH = "path"
 IN_QUERY = "query"
@@ -46,13 +47,19 @@ def get_request_body(definition: PFMSDefinition, is_bulk=False):
 
 
 def get_response(definition: PFMSDefinition, http_code=200):
+    any_of_response = {"anyOf": []}
+    if definition.response_obj:
+        any_of_response["anyOf"].append(get_schema_def_ref(definition.response_component))
+
+    any_of_response["anyOf"].append(get_schema_def_ref(MESSAGE_RESPONSE))
+    if definition.error_details:
+        any_of_response["anyOf"].append(get_schema_def_ref(ERROR_DETAILS_RESPONSE))
+
     return {
         http_code: {
             "content": {
                 definition.response_type: {
-                    "schema": {
-
-                    }
+                    "schema": any_of_response
                 }
             }
         }

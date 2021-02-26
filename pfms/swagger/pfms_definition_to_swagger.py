@@ -1,18 +1,17 @@
 from apispec import APISpec
 from pfms.common.pfms_data_type import string
 from pfms.pfapi.rr.api_request import single_request, bulk_request
-from pfms.pfapi.rr.api_response import data_response
+from pfms.pfapi.rr.api_response import data_response, bulk_success_data_response
 from pfms.pfapi.rr.base_response import MessageResponse, ErrorResponse
 from pfms.swagger.pfms_definition import PFMSDefinition
 from pfms.common.pfms_util import get_random_string
-from pfms.swagger.pfms_swagger_schemas import get_parameter, IN_QUERY, IN_PATH, get_request_body
+from pfms.swagger.pfms_swagger_cons import MESSAGE_RESPONSE, ERROR_DETAILS_RESPONSE
+from pfms.swagger.pfms_swagger_schemas import get_parameter, IN_QUERY, IN_PATH, get_request_body, get_response
 
 
 class PFMSDefinitionToSwagger:
 
     specification: APISpec
-    MESSAGE_RESPONSE: str = "MessageResponse"
-    ERROR_DETAILS_RESPONSE: str = "ErrorDetailsResponse"
 
     def __init__(self, specification: APISpec):
         self.specification = specification
@@ -22,8 +21,8 @@ class PFMSDefinitionToSwagger:
             self.specification.components.schema(key, schema=data)
 
     def init_default_things(self):
-        self.add_component_schema(self.MESSAGE_RESPONSE, MessageResponse)
-        self.add_component_schema(self.ERROR_DETAILS_RESPONSE, ErrorResponse)
+        self.add_component_schema(MESSAGE_RESPONSE, MessageResponse)
+        self.add_component_schema(ERROR_DETAILS_RESPONSE, ErrorResponse)
 
     def pre_process_definition(self, definition: PFMSDefinition):
         component_code = get_random_string(13).upper()
@@ -49,7 +48,10 @@ class PFMSDefinitionToSwagger:
             self.add_component_schema(definition.request_component, req)
 
         if definition.response_obj:
-            res = data_response(definition.response_obj)
+            if self._is_list_response(definition.response_type):
+                res = bulk_success_data_response(definition.response_obj)
+            else:
+                res = data_response(definition.response_obj)
             self.add_component_schema(definition.response_component, res)
 
     def get_tuple_value(self, data: tuple, index: int, default=None):
@@ -84,7 +86,7 @@ class PFMSDefinitionToSwagger:
 
     def get_responses(self, definition: PFMSDefinition):
         if definition.response_obj:
-            print("--")
+            return get_response(definition)
         return None
 
     def get_operations(self, definition: PFMSDefinition):
