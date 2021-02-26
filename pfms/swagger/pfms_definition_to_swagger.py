@@ -1,7 +1,7 @@
 from apispec import APISpec
 from pfms.common.pfms_data_type import string
 from pfms.pfapi.rr.api_request import single_request, bulk_request
-from pfms.pfapi.rr.api_response import data_response, bulk_success_data_response
+from pfms.pfapi.rr.api_response import bulk_success_data_response_def, data_response_def
 from pfms.pfapi.rr.base_response import MessageResponse, ErrorResponse
 from pfms.swagger.pfms_definition import PFMSDefinition
 from pfms.common.pfms_util import get_random_string
@@ -49,9 +49,9 @@ class PFMSDefinitionToSwagger:
 
         if definition.response_obj:
             if self._is_list_response(definition.response_type):
-                res = bulk_success_data_response(definition.response_obj)
+                res = bulk_success_data_response_def(definition.response_obj)
             else:
-                res = data_response(definition.response_obj)
+                res = data_response_def(definition.response_obj)
             self.add_component_schema(definition.response_component, res)
 
     def get_tuple_value(self, data: tuple, index: int, default=None):

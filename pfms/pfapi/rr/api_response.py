@@ -1,21 +1,23 @@
+from marshmallow import fields
 from pfms.pfapi.pfms_cons import SUCCESS, SUCCESS_CODE
-from pfms.pfapi.rr.data_response import DataResponse
-from pfms.pfapi.rr.base_response import MessageResponse
+from pfms.pfapi.rr.base_response import MessageResponse, BaseResponse
 
 
-def data_response(data, status=SUCCESS):
-    return bulk_data_response(data, status, False)
+def data_response_def(data, status=SUCCESS):
+    return bulk_data_response_def(data, status, False)
 
 
-def bulk_success_data_response(data):
-    return bulk_data_response(data)
+def bulk_success_data_response_def(data):
+    return bulk_data_response_def(data)
 
 
-def bulk_data_response(data, status=SUCCESS, many=True):
-    dr = DataResponse().set_data(data, many)
+def bulk_data_response_def(data, status=SUCCESS, many=True):
+    dr = BaseResponse()
+    response = {
+        "data": fields.Nested(data, many=many)
+    }
     dr.status = status
-    dr.code = SUCCESS_CODE
-    return dr
+    return dr.get_response_def(response)
 
 
 def message_response(message, status=SUCCESS, code=SUCCESS_CODE):
