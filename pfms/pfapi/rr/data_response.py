@@ -1,13 +1,10 @@
 from marshmallow import fields
-from marshmallow.base import SchemaABC
 from pfms.pfapi.rr.base_response import BaseResponse
 
 
 class DataResponse(BaseResponse):
-    _obj: SchemaABC = None
+    data = None
 
-    def __init__(self, obj):
-        super().__init__()
-        self._obj = obj
-
-    data = fields.Nested(_obj)
+    def set_data(self, data, many=False):
+        self.data = fields.Nested(data, many=many)
+        return self

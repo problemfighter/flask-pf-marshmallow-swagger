@@ -15,4 +15,5 @@ class PFMSDefinition:
 
     response_component: str = None
     request_component: str = None
+    description: str = ""
 

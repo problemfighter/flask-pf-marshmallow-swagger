@@ -4,7 +4,11 @@ from pfms.pfapi.rr.base_response import MessageResponse
 
 
 def data_response(data, status=SUCCESS):
-    dr = DataResponse(data)
+    return bulk_data_response(data, status, False)
+
+
+def bulk_data_response(data, status=SUCCESS, many=True):
+    dr = DataResponse().set_data(data, many)
     dr.status = status
     dr.code = SUCCESS_CODE
     return dr

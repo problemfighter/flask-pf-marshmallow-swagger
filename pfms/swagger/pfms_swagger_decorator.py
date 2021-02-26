@@ -1,11 +1,11 @@
 from functools import wraps
 
 from pfms.swagger.pfms_definition import PFMSDefinition
-from pfms.swagger.pfms_swagger_cons import CREATE_UPDATE, LIST, CREATE
+from pfms.swagger.pfms_swagger_cons import CREATE_UPDATE, LIST, CREATE, SIMPLE_GET
 
 
 def request_response(rr_type,
-        request_body, response_obj, query_param=None,
+        request_body=None, response_obj=None, query_param=None,
         error_details=True, request_type='application/json',
         response_type='application/json'):
     def decorator(function):
@@ -30,6 +30,10 @@ def request_response(rr_type,
 
 def request_response_list(request_body, response_obj):
     return request_response(LIST, request_body, response_obj)
+
+
+def simple_get(response_obj, query_param=None):
+    return request_response(SIMPLE_GET, response_obj=response_obj, query_param=query_param)
 
 
 def create(request_body, response_obj):

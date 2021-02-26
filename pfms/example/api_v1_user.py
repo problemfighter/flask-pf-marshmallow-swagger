@@ -1,5 +1,6 @@
 from flask import Blueprint
-from pfms.swagger.pfms_swagger_decorator import request_response, create, request_response_list
+from pfms.common.pfms_data_type import string, number
+from pfms.swagger.pfms_swagger_decorator import request_response, create, request_response_list, simple_get
 from pfms.example.dto.details import Details
 
 user_blueprint = Blueprint('user_blueprint', __name__, url_prefix="/api/v1/user")
@@ -20,6 +21,12 @@ def details(id, name):
 @user_blueprint.route("/", methods=["GET"])
 @request_response_list(request_body=Details, response_obj=Details)
 def bismillah():
+    return "Response "
+
+
+@user_blueprint.route("/simple-get", methods=["GET"])
+@simple_get(query_param=[("name", string), ("age", number)], response_obj=Details)
+def simple_get():
     return "Response "
 
 # @user_blueprint.route("/update", methods=["POST"])
