@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
+from pfms.common.pfms_exception import PfMsException
 from pfms.swagger.pfms_actions_to_definition import ActionsToSwagger
 
 
@@ -23,6 +24,7 @@ class PFMarshmallowSwagger:
         self.blue_print.add_url_rule("/pf-swagger-json", "pf-swagger-json", self.swagger_json)
         self.blue_print.add_url_rule("/pf-swagger-ui", "pf-swagger-ui", self.swagger_ui)
         app.register_blueprint(self.blue_print)
+        app.register_error_handler(PfMsException, self.exception_handling)
 
     def update_swagger_details(self, title="PF Marshmallow Swagger", version="1.0.0"):
         self._api_specification.title = title
@@ -36,7 +38,9 @@ class PFMarshmallowSwagger:
     def swagger_ui(self):
         return render_template('pf-swagger-ui.html')
 
-    def print_me(self):
-        print("Bismillah")
-        return "Flask PFMarshmallowSwagger Extension"
+    def exception_handling(self, exception):
+        return {
+            "response": "Response"
+        }
+
 

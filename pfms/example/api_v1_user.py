@@ -1,14 +1,17 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from pfms.common.pfms_data_type import string, number
+from pfms.pfapi.rr.pfms_request_respons import PfRequestResponse
 from pfms.swagger.pfms_swagger_decorator import request_response, create, request_response_list, simple_get
 from pfms.example.dto.details import Details
 
 user_blueprint = Blueprint('user_blueprint', __name__, url_prefix="/api/v1/user")
+rr = PfRequestResponse()
 
 
-@user_blueprint.route("/create", methods=["POST", "GET"])
+@user_blueprint.route("/create", methods=["POST"])
 @create(request_body=Details, response_obj=Details)
 def create():
+    rr.process(Details())
     return "Created"
 
 

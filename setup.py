@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='Flask-PF-Marshmallow-Swagger',
     version='1.0',
-    url='http://example.com/flask-sqlite3/',
+    url='https://github.com/problemfighter/flask-pf-marshmallow-swagger',
     license='Apache 2.0',
     author='Touhid Mia',
     author_email='problemfighter.com@gmail.com',
@@ -16,7 +16,8 @@ setup(
     install_requires=[
         'Flask',
         'Marshmallow',
-        'Apispec'
+        'Apispec',
+        'marshmallow-sqlalchemy'
     ],
     classifiers=[
         'Environment :: Web Environment',
