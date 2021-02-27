@@ -24,10 +24,10 @@ class PfResponseProcessor:
         response.message = message
         return response
 
-    def success(self, message, code=SUCCESS_CODE) -> str:
+    def success(self, message, code=SUCCESS_CODE):
         return self.json_response(self.message_response(message, SUCCESS, code))
 
-    def error(self, message, code=ERROR_CODE)-> str:
+    def error(self, message, code=ERROR_CODE):
         return self.json_response(self.message_response(message, ERROR, code))
 
     def error_response(self, errors: dict, message=None, status=ERROR, code=ERROR_CODE):
@@ -39,10 +39,10 @@ class PfResponseProcessor:
         return self.json_response(response)
 
     def handle_global_exception(self, pfms_exception: PfMsException):
-        if pfms_exception.errorResponse:
-            return pfms_exception.errorResponse
-        elif pfms_exception.messageResponse:
-            return pfms_exception.messageResponse
+        if pfms_exception.error_response:
+            return pfms_exception.error_response
+        elif pfms_exception.message_response:
+            return pfms_exception.message_response
         elif pfms_exception.message:
             return self.error(pfms_exception.message)
         else:
