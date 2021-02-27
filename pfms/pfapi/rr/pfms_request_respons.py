@@ -8,5 +8,5 @@ class PfRequestResponse(PfRequestProcessor, PfResponseProcessor):
 
     def process(self, pf_schema: PfBaseSchema):
         json = self.get_json()
-        raise PfMsException
+        raise PfMsException(message="Error")
         print("test")

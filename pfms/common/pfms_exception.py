@@ -6,6 +6,8 @@ class PfMsException(Exception):
     errorResponse: ErrorResponse = None
     message: str = None
 
-    def __init__(self, message: str = None, messageResponse: MessageResponse = None,
-                 errorResponse: ErrorResponse = None):
-        super().__init__()
+    def __init__(self, message: str = None, messageResponse: MessageResponse = None, errorResponse: ErrorResponse = None):
+        self.message = message
+        self.errorResponse = errorResponse
+        self.messageResponse = messageResponse
+        super().__init__(message)

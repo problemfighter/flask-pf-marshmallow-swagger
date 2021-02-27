@@ -1,3 +1,4 @@
+import json
 
 from marshmallow import Schema, fields
 
@@ -12,6 +13,10 @@ class BaseResponse(Schema):
         data["status"] = fields.String()
         data["code"] = fields.String()
         return Schema.from_dict(data)
+
+    def json(self, many=False) -> str:
+        return self.dumps(self, many=many)
+
 
 
 class MessageResponse(BaseResponse):

@@ -2,6 +2,7 @@ from flask import Blueprint, render_template
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 from pfms.common.pfms_exception import PfMsException
+from pfms.pfapi.rr.pfms_response_processor import pf_response
 from pfms.swagger.pfms_actions_to_definition import ActionsToSwagger
 
 
@@ -38,9 +39,7 @@ class PFMarshmallowSwagger:
     def swagger_ui(self):
         return render_template('pf-swagger-ui.html')
 
-    def exception_handling(self, exception):
-        return {
-            "response": "Response"
-        }
+    def exception_handling(self, exception: PfMsException):
+        return pf_response.handle_global_exception(exception)
 
 
