@@ -1,7 +1,7 @@
 from functools import wraps
 
 from pfms.swagger.pfms_definition import PFMSDefinition
-from pfms.swagger.pfms_swagger_cons import CREATE_UPDATE, LIST, CREATE, SIMPLE_GET
+from pfms.swagger.pfms_swagger_cons import CREATE_UPDATE, LIST, CREATE, SIMPLE_GET, BULK_CREATE
 
 
 def request_response(rr_type,
@@ -38,4 +38,8 @@ def simple_get(response_obj, query_param=None):
 
 def create(request_body, response_obj):
     return request_response(CREATE, request_body, response_obj)
+
+
+def bulk_create(request_body, response_obj):
+    return request_response(BULK_CREATE, request_body, response_obj)
 

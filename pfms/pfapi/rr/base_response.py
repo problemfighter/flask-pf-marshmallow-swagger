@@ -28,12 +28,25 @@ class ErrorResponse(MessageResponse):
 class DataResponse(BaseResponse):
     data = None
 
+    def get_list_data_type(self, data_list: list):
+        if len(data_list) != 0:
+            first_element = data_list[0]
+            if isinstance(first_element, int):
+                return fields.Integer
+            if isinstance(first_element, dict):
+                return fields.Dict
+            if isinstance(first_element, float):
+                return fields.Float
+        return fields.String
+
     def add_data(self, data, many):
         field = None
         if isinstance(data, dict):
             field = fields.Dict(default=data)
         elif isinstance(data, PfBaseSchema):
             field = fields.Nested(data, many=many)
+        elif isinstance(data, list):
+            field = fields.List(default=data, cls_or_instance=self.get_list_data_type(data))
         if field:
             self.data = data
             self.fields['data'] = field

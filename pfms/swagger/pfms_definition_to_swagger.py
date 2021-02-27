@@ -41,14 +41,14 @@ class PFMSDefinitionToSwagger:
 
     def add_request_response_schema(self, definition: PFMSDefinition):
         if definition.request_body:
-            if self._is_bulk_request(definition.request_type):
+            if self._is_bulk_request(definition.rr_type):
                 req = bulk_request(definition.request_body)
             else:
                 req = single_request(definition.request_body)
             self.add_component_schema(definition.request_component, req)
 
         if definition.response_obj:
-            if self._is_list_response(definition.response_type):
+            if self._is_list_response(definition.rr_type):
                 res = bulk_success_data_response_def(definition.response_obj)
             else:
                 res = data_response_def(definition.response_obj)

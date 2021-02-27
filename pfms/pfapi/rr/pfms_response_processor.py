@@ -44,7 +44,7 @@ class PfResponseProcessor:
         response.status = SUCCESS
         response.code = SUCCESS_CODE
         response.add_data(data, many)
-        return self.json_response(response, many)
+        return self.json_response(response, False)
 
     def data_response(self, data):
         return self._data_response(data)
