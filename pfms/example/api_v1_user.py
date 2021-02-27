@@ -11,8 +11,8 @@ rr = PfRequestResponse()
 @user_blueprint.route("/create", methods=["POST"])
 @create(request_body=Details, response_obj=Details)
 def create():
-    rr.json_request_process(Details())
-    return "Created"
+    details = rr.json_request_process(Details())
+    return rr.data_response(details)
 
 
 @user_blueprint.route("/details/<int:id>/<string:name>", methods=["GET"])

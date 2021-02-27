@@ -1,7 +1,8 @@
 from flask import make_response
+from marshmallow import fields
 from pfms.common.pfms_exception import PfMsException
 from pfms.pfapi.pfms_cons import SUCCESS_CODE, ERROR_CODE, SUCCESS, ERROR, APP_JSON, CONTENT_TYPE
-from pfms.pfapi.rr.base_response import MessageResponse, ErrorResponse, BaseResponse
+from pfms.pfapi.rr.base_response import MessageResponse, ErrorResponse, BaseResponse, DataResponse
 
 
 class PfResponseProcessor:
@@ -14,8 +15,8 @@ class PfResponseProcessor:
         response.headers[CONTENT_TYPE] = APP_JSON
         return response
 
-    def json_response(self, response: BaseResponse):
-        return self.flask_json_response(response.json())
+    def json_response(self, response: BaseResponse, many=False):
+        return self.flask_json_response(response.json(many))
 
     def message_response(self, message, status, code) -> MessageResponse:
         response = MessageResponse()
@@ -37,6 +38,19 @@ class PfResponseProcessor:
         response.error = errors
         response.message = message
         return self.json_response(response)
+
+    def _data_response(self, data, many=False):
+        response: DataResponse = DataResponse()
+        response.status = SUCCESS
+        response.code = SUCCESS_CODE
+        response.add_data(data, many)
+        return self.json_response(response, many)
+
+    def data_response(self, data):
+        return self._data_response(data)
+
+    def bulk_data_response(self, data):
+        return self._data_response(data, True)
 
     def handle_global_exception(self, pfms_exception: PfMsException):
         if pfms_exception.error_response:

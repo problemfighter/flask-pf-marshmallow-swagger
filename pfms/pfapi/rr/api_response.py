@@ -17,7 +17,7 @@ def bulk_data_response_def(data, status=SUCCESS, many=True):
         "data": fields.Nested(data, many=many)
     }
     dr.status = status
-    return dr.get_response_def(response)
+    return dr.get_data_response_def(response)
 
 
 def message_response(message, status=SUCCESS, code=SUCCESS_CODE):
