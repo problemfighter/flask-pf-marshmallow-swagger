@@ -6,7 +6,7 @@ setup(
     url='https://github.com/problemfighter/flask-pf-marshmallow-swagger',
     license='Apache 2.0',
     author='Touhid Mia',
-    author_email='problemfighter.com@gmail.com',
+    author_email='hmtm.cse@gmail.com',
     description='This is Problem Fighter Flask Marshmallow Swagger Extension',
     long_description=__doc__,
     packages=find_packages(),
