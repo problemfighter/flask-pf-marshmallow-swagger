@@ -87,6 +87,8 @@ class PFMSDefinitionToSwagger:
     def get_responses(self, definition: PFMSDefinition):
         if definition.response_obj:
             return get_response(definition)
+        elif definition.only_message:
+            return get_response(definition)
         return None
 
     def get_operations(self, definition: PFMSDefinition):

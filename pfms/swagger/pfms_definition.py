@@ -10,6 +10,7 @@ class PFMSDefinition:
     request_exclude = None
     query_param = None
     error_details = None
+    only_message: bool = False
     rr_type = None
     methods = []
     tags = []
