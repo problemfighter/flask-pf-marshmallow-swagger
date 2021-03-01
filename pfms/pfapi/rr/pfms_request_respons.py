@@ -8,8 +8,8 @@ class PfRequestResponse(PfRequestProcessor, PfResponseProcessor):
     def json_request_process(self, pf_schema: PfBaseSchema):
         return self.validate_and_process(pf_schema)
 
-    def json_data_response(self, pf_schema: PfBaseSchema):
-        return self.data_response(pf_schema)
+    def json_data_response(self, model, pf_schema: PfBaseSchema):
+        return self.data_response(model, pf_schema)
 
     def json_pagination_response(self):
         pass

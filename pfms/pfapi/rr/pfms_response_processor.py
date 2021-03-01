@@ -1,6 +1,8 @@
+from common.pff_common_exception import PFFCommonException
 from flask import make_response
 from marshmallow import fields
 from pfms.common.pfms_exception import PfMsException
+from pfms.pfapi.base.pfms_base_schema import PfBaseSchema
 from pfms.pfapi.pfms_cons import SUCCESS_CODE, ERROR_CODE, SUCCESS, ERROR, APP_JSON, CONTENT_TYPE
 from pfms.pfapi.rr.base_response import MessageResponse, ErrorResponse, BaseResponse, DataResponse
 
@@ -39,15 +41,17 @@ class PfResponseProcessor:
         response.message = message
         return self.json_response(response)
 
-    def _data_response(self, data, many=False):
+    def _data_response(self, data, many=False, pf_schema: PfBaseSchema = None):
         response: DataResponse = DataResponse()
         response.status = SUCCESS
         response.code = SUCCESS_CODE
+        if pf_schema:
+            data = pf_schema.dump(data, many=many)
         response.add_data(data, many)
         return self.json_response(response, False)
 
-    def data_response(self, data):
-        return self._data_response(data)
+    def data_response(self, data, pf_schema: PfBaseSchema = None):
+        return self._data_response(data, False, pf_schema)
 
     def bulk_data_response(self, data):
         return self._data_response(data, True)
@@ -59,6 +63,13 @@ class PfResponseProcessor:
             return pfms_exception.message_response
         elif pfms_exception.message:
             return self.error(pfms_exception.message)
+        else:
+            return self.error("Unknown Error")
+
+    def handle_common_exception(self, exception: PFFCommonException):
+        message = str(exception)
+        if message:
+            return self.error(message)
         else:
             return self.error("Unknown Error")
 

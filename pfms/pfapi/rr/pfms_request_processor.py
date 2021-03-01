@@ -1,9 +1,10 @@
-from flask import request, session
+from flask import request
 from marshmallow import ValidationError
 from pfms.common.pfms_exception import PfMsException
 from pfms.pfapi.base.pfms_base_schema import PfBaseSchema
 from pfms.pfapi.pfms_cons import VALIDATION_ERROR_CODE, VALIDATION_ERROR_MSG, INVALID_VALIDATION_REQUEST_MSG
 from pfms.pfapi.rr.pfms_response_processor import pf_response
+from sqlalchemy.orm import session
 
 
 class PfRequestProcessor:

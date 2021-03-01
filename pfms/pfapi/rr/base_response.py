@@ -41,6 +41,8 @@ class DataResponse(BaseResponse):
 
     def add_data(self, data, many):
         field = None
+        if isinstance(data, str):
+            field = fields.String(default=data)
         if isinstance(data, dict):
             field = fields.Dict(default=data)
         elif isinstance(data, PfBaseSchema):

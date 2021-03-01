@@ -1,3 +1,4 @@
+from common.pff_common_exception import PFFCommonException
 from flask import Blueprint, render_template
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
@@ -26,6 +27,7 @@ class PFMarshmallowSwagger:
         self.blue_print.add_url_rule("/pf-swagger-ui", "pf-swagger-ui", self.swagger_ui)
         app.register_blueprint(self.blue_print)
         app.register_error_handler(PfMsException, self.exception_handling)
+        app.register_error_handler(PFFCommonException, self.handle_common_exception)
 
     def update_swagger_details(self, title="PF Marshmallow Swagger", version="1.0.0"):
         self._api_specification.title = title
@@ -41,5 +43,8 @@ class PFMarshmallowSwagger:
 
     def exception_handling(self, exception: PfMsException):
         return pf_response.handle_global_exception(exception)
+
+    def handle_common_exception(self, exception: PFFCommonException):
+        return pf_response.handle_common_exception(exception)
 
 
