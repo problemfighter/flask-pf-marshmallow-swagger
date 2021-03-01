@@ -21,15 +21,15 @@ class PfRequestProcessor:
             return json['data']
         return None
 
-    def validate_and_process(self, pf_schema: PfBaseSchema):
+    def validate_and_process(self, pf_schema: PfBaseSchema, existing_instance=None):
         request_data = self.get_request_data()
         if not request_data:
             raise PfMsException(message=INVALID_VALIDATION_REQUEST_MSG)
-        return self.request_validate(request_data, pf_schema)
+        return self.request_validate(request_data, pf_schema, existing_instance)
 
-    def request_validate(self, json, pf_schema: PfBaseSchema):
+    def request_validate(self, json, pf_schema: PfBaseSchema, existing_instance=None):
         try:
-            return pf_schema.load(json, session=session)
+            return pf_schema.load(json, session=session, instance=existing_instance)
         except ValidationError as error:
             error_dic = self._process_validation_error(error)
             error_exception = pf_response.error_response(errors=error_dic, code=VALIDATION_ERROR_CODE, message=VALIDATION_ERROR_MSG)

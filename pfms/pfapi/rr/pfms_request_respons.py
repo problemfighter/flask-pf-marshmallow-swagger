@@ -6,8 +6,8 @@ from pfms.pfapi.rr.pfms_response_processor import PfResponseProcessor
 
 class PfRequestResponse(PfRequestProcessor, PfResponseProcessor):
 
-    def json_request_process(self, pf_schema: PfBaseSchema):
-        return self.validate_and_process(pf_schema)
+    def json_request_process(self, pf_schema: PfBaseSchema, existing_instance=None):
+        return self.validate_and_process(pf_schema, existing_instance)
 
     def json_data_response(self, model, pf_schema: PfBaseSchema):
         return self.data_response(model, pf_schema)
