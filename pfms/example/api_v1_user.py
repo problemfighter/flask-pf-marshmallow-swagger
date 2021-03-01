@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from pfms.common.pfms_data_type import string, number
 from pfms.pfapi.rr.pfms_request_respons import PfRequestResponse
-from pfms.swagger.pfms_swagger_decorator import request_response, create, request_response_list, simple_get, bulk_create
+from pfms.swagger.pfms_swagger_decorator import request_response, pfms_create, request_response_list, simple_get, bulk_create
 from pfms.example.dto.details import Details
 
 user_blueprint = Blueprint('user_blueprint', __name__, url_prefix="/api/v1/user")
@@ -9,7 +9,7 @@ rr = PfRequestResponse()
 
 
 @user_blueprint.route("/create", methods=["POST"])
-@create(request_body=Details, response_obj=Details)
+@pfms_create(request_body=Details, response_obj=Details)
 def create():
     details = rr.json_request_process(Details())
     data_list = ["1.2"]
