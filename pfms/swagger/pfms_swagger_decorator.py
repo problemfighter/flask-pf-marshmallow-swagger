@@ -1,7 +1,9 @@
 from functools import wraps
 
+from pfms.common.pfms_data_type import integer
 from pfms.swagger.pfms_definition import PFMSDefinition
-from pfms.swagger.pfms_swagger_cons import CREATE_UPDATE, LIST, CREATE, SIMPLE_GET, BULK_CREATE, DETAILS, DELETE
+from pfms.swagger.pfms_swagger_cons import CREATE_UPDATE, LIST, CREATE, SIMPLE_GET, BULK_CREATE, DETAILS, DELETE, \
+    PAGINATED_LIST
 
 
 def request_response(rr_type,
@@ -52,3 +54,10 @@ def pfms_delete():
 def bulk_create(request_body, response_obj):
     return request_response(BULK_CREATE, request_body, response_obj)
 
+
+def pfms_pagination_list(response_obj, query_param: list = None):
+    if not query_param:
+        query_param = []
+    query_param.append(("page", integer))
+    query_param.append(("per-page", integer))
+    return request_response(PAGINATED_LIST, response_obj=response_obj, query_param=query_param)
