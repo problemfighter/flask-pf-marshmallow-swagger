@@ -1,6 +1,5 @@
 from common.pff_common_exception import PFFCommonException
 from flask import make_response
-from marshmallow import fields
 from pfms.common.pfms_exception import PfMsException
 from pfms.pfapi.base.pfms_base_schema import PfBaseSchema
 from pfms.pfapi.pfms_cons import SUCCESS_CODE, ERROR_CODE, SUCCESS, ERROR, APP_JSON, CONTENT_TYPE
