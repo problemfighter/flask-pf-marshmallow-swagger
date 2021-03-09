@@ -27,6 +27,7 @@ class ErrorResponse(MessageResponse):
 
 class DataResponse(BaseResponse):
     data = None
+    pagination = None
 
     def get_list_data_type(self, data_list: list):
         if len(data_list) != 0:
@@ -40,6 +41,12 @@ class DataResponse(BaseResponse):
         return fields.String
 
     def add_data(self, data, many):
+        self.add_nested(data, many)
+
+    def add_pagination(self, data):
+        self.add_nested(data, False, "pagination")
+
+    def add_nested(self, data, many, key="data"):
         field = None
         if isinstance(data, str):
             field = fields.String(default=data)
@@ -47,11 +54,30 @@ class DataResponse(BaseResponse):
             field = fields.Dict(default=data)
         elif isinstance(data, PfBaseSchema):
             field = fields.Nested(data, many=many)
+        elif isinstance(data, Schema):
+            field = fields.Nested(data, many=many)
         elif isinstance(data, list):
             field = fields.List(default=data, cls_or_instance=self.get_list_data_type(data))
         if field:
-            self.data = data
-            self.fields['data'] = field
-            self.dump_fields['data'] = field
-            self.declared_fields['data'] = field
-            self.load_fields['data'] = field
+            if key == "data":
+                self.data = data
+            if key == "pagination":
+                self.pagination = data
+
+            self.fields[key] = field
+            self.dump_fields[key] = field
+            self.declared_fields[key] = field
+            self.load_fields[key] = field
+
+
+class Pagination(Schema):
+    page = fields.Integer()
+    itemPerPage = fields.Integer()
+    total = fields.Integer()
+    totalPage = fields.Integer()
+
+
+class PaginatedResponse(DataResponse):
+    pagination: Pagination
+
+

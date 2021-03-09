@@ -4,7 +4,7 @@ from marshmallow import fields
 from pfms.common.pfms_exception import PfMsException
 from pfms.pfapi.base.pfms_base_schema import PfBaseSchema
 from pfms.pfapi.pfms_cons import SUCCESS_CODE, ERROR_CODE, SUCCESS, ERROR, APP_JSON, CONTENT_TYPE
-from pfms.pfapi.rr.base_response import MessageResponse, ErrorResponse, BaseResponse, DataResponse
+from pfms.pfapi.rr.base_response import MessageResponse, ErrorResponse, BaseResponse, DataResponse, Pagination
 
 
 class PfResponseProcessor:
@@ -41,20 +41,31 @@ class PfResponseProcessor:
         response.message = message
         return self.json_response(response)
 
-    def _data_response(self, data, many=False, pf_schema: PfBaseSchema = None):
+    def _data_response(self, data, many=False, pf_schema: PfBaseSchema = None, pagination=None):
         response: DataResponse = DataResponse()
         response.status = SUCCESS
         response.code = SUCCESS_CODE
         if pf_schema:
             data = pf_schema.dump(data, many=many)
         response.add_data(data, many)
+        if pagination:
+            pagination_string = Pagination().dump(pagination)
+            response.add_pagination(pagination_string)
         return self.json_response(response, False)
 
     def data_response(self, data, pf_schema: PfBaseSchema = None):
         return self._data_response(data, False, pf_schema)
 
-    def bulk_data_response(self, data):
-        return self._data_response(data, True)
+    def bulk_data_response(self, data, pf_schema: PfBaseSchema = None):
+        return self._data_response(data, True, pf_schema)
+
+    def paginated_data_response(self, data, pf_schema: PfBaseSchema = None):
+        pagination = Pagination()
+        pagination.page = data.page
+        pagination.totalPage = data.pages
+        pagination.itemPerPage = data.per_page
+        pagination.total = data.total
+        return self._data_response(data.items, True, pf_schema, pagination)
 
     def handle_global_exception(self, pfms_exception: PfMsException):
         if pfms_exception.error_response:

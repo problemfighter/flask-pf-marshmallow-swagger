@@ -22,8 +22,8 @@ class PfRequestResponse(PfRequestProcessor, PfResponseProcessor):
             raise PfMsException(message_response=self.error(message))
         return data
 
-    def json_pagination_response(self):
-        pass
+    def json_pagination_response(self, model_paginated, pf_schema: PfBaseSchema):
+        return self.paginated_data_response(model_paginated, pf_schema)
 
     def json_list_response(self):
         pass

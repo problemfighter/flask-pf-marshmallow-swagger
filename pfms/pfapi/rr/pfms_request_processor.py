@@ -45,3 +45,15 @@ class PfRequestProcessor:
                 message_dict[message] = error_text
         return message_dict
 
+    def pagination_params(self):
+        page: int = request.args.get('page', type=int)
+        if not page:
+            page = 0
+        per_page: int = request.args.get('per-page', type=int)
+        if not per_page:
+            per_page = 25
+        return {"page": page, "per_page": per_page}
+
+    def add_pagination(self, model):
+        pagination = self.pagination_params()
+        return model.paginate(page=pagination['page'], per_page=pagination['per_page'], error_out=False)

@@ -1,7 +1,7 @@
 from apispec import APISpec
 from pfms.common.pfms_data_type import string
 from pfms.pfapi.rr.api_request import single_request, bulk_request
-from pfms.pfapi.rr.api_response import bulk_success_data_response_def, data_response_def
+from pfms.pfapi.rr.api_response import bulk_success_data_response_def, data_response_def, paginated_response_def
 from pfms.pfapi.rr.base_response import MessageResponse, ErrorResponse
 from pfms.swagger.pfms_definition import PFMSDefinition
 from pfms.common.pfms_util import get_random_string
@@ -39,6 +39,11 @@ class PFMSDefinitionToSwagger:
             return True
         return False
 
+    def _is_paginated_response(self, content_type: str):
+        if content_type.startswith("PAGINATED"):
+            return True
+        return False
+
     def add_request_response_schema(self, definition: PFMSDefinition):
         if definition.request_body:
             if self._is_bulk_request(definition.rr_type):
@@ -48,7 +53,9 @@ class PFMSDefinitionToSwagger:
             self.add_component_schema(definition.request_component, req)
 
         if definition.response_obj:
-            if self._is_list_response(definition.rr_type):
+            if self._is_paginated_response(definition.rr_type):
+                res = paginated_response_def(definition.response_obj)
+            elif self._is_list_response(definition.rr_type):
                 res = bulk_success_data_response_def(definition.response_obj)
             else:
                 res = data_response_def(definition.response_obj)
