@@ -6,7 +6,14 @@ from pfms.pfapi.rr.pfms_response_processor import PfResponseProcessor
 request_processor = PfRequestProcessor()
 response_processor = PfResponseProcessor()
 
-class PfRequestResponse():
+
+class PfRequestResponse:
+
+    def response(self):
+        return response_processor
+
+    def request(self):
+        return request_processor
 
     def json_request_process(self, pf_schema: PfBaseSchema, existing_instance=None):
         return request_processor.validate_and_process(pf_schema, existing_instance)
