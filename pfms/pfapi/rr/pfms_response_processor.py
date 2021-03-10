@@ -55,6 +55,13 @@ class PfResponseProcessor:
     def data_response(self, data, pf_schema: PfBaseSchema = None):
         return self._data_response(data, False, pf_schema)
 
+    def list_dic_data_response(self, data_list_dic, many=False):
+        response: DataResponse = DataResponse()
+        response.status = SUCCESS
+        response.code = SUCCESS_CODE
+        response.add_data(data_list_dic, many)
+        return self.json_response(response, False)
+
     def bulk_data_response(self, data, pf_schema: PfBaseSchema = None):
         return self._data_response(data, True, pf_schema)
 

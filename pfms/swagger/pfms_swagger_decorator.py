@@ -3,7 +3,7 @@ from functools import wraps
 from pfms.common.pfms_data_type import integer
 from pfms.swagger.pfms_definition import PFMSDefinition
 from pfms.swagger.pfms_swagger_cons import CREATE_UPDATE, LIST, CREATE, SIMPLE_GET, BULK_CREATE, DETAILS, DELETE, \
-    PAGINATED_LIST
+    PAGINATED_LIST, POST
 
 
 def request_response(rr_type,
@@ -29,6 +29,10 @@ def request_response(rr_type,
             return function(*args, **kwargs)
         return pfms_swagger_def
     return decorator
+
+
+def pfms_post_request(request_body, response_obj):
+    return request_response(POST, request_body, response_obj)
 
 
 def request_response_list(request_body, response_obj):
