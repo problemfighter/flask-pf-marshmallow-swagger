@@ -1,6 +1,6 @@
 from functools import wraps
 
-from pfms.common.pfms_data_type import integer
+from pfms.common.pfms_data_type import integer, string
 from pfms.swagger.pfms_definition import PFMSDefinition
 from pfms.swagger.pfms_swagger_cons import CREATE_UPDATE, LIST, CREATE, SIMPLE_GET, BULK_CREATE, DETAILS, DELETE, \
     PAGINATED_LIST, POST
@@ -65,3 +65,11 @@ def pfms_pagination_list(response_obj, query_param: list = None):
     query_param.append(("page", integer))
     query_param.append(("per-page", integer))
     return request_response(PAGINATED_LIST, response_obj=response_obj, query_param=query_param)
+
+
+def pfms_pagination_sort_list(response_obj, query_param: list = None):
+    if not query_param:
+        query_param = []
+    query_param.append(("sort_field", string))
+    query_param.append(("sort_order", string))
+    return pfms_pagination_list(response_obj, query_param)

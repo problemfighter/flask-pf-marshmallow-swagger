@@ -4,6 +4,7 @@ from pfms.common.pfms_exception import PfMsException
 from pfms.pfapi.base.pfms_base_schema import PfBaseSchema
 from pfms.pfapi.pfms_cons import VALIDATION_ERROR_CODE, VALIDATION_ERROR_MSG, INVALID_VALIDATION_REQUEST_MSG
 from pfms.pfapi.rr.pfms_response_processor import pf_response
+from sqlalchemy import text
 from sqlalchemy.orm import session
 
 
@@ -57,3 +58,16 @@ class PfRequestProcessor:
     def add_pagination(self, model):
         pagination = self.pagination_params()
         return model.paginate(page=pagination['page'], per_page=pagination['per_page'], error_out=False)
+
+    def add_order_by(self, model, default_field="id", default_order="desc"):
+        sort_field = request.args.get("sort_field")
+        if not sort_field:
+            sort_field = default_field
+
+        sort_order = request.args.get("sort_order")
+        if not sort_order:
+            sort_order = default_order
+        elif sort_order and (sort_order != "asc" and sort_order != "desc"):
+            sort_order = default_order
+
+        return model.order_by(text(sort_field + " " + sort_order))
