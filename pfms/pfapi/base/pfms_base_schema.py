@@ -17,10 +17,16 @@ class PfDetailBaseSchema(PfBaseSchema):
 
 
 def common_exclude():
-    exclude = ("id", "created", "updated", "uuid")
+    exclude = ["id", "created", "updated", "uuid"]
     return exclude
 
 
 def update_exclude():
     exclude = ("created", "updated", "uuid")
     return exclude
+
+
+def common_exclude_append(*args):
+    list_args = list(args)
+    list_args.extend(common_exclude())
+    return list_args
