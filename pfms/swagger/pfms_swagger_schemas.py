@@ -39,7 +39,7 @@ def get_request_body(definition: PFMSDefinition, is_bulk=False):
     return {
         "required": True,
         "content": {
-            definition.response_type: {
+            definition.request_type: {
                 "schema": get_schema_def_ref(definition.request_component, s_type)
             }
         }

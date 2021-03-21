@@ -65,7 +65,6 @@ class ActionsToSwagger:
         else:
             definition.tags.append("Common")
 
-
     def _process_action_decorator(self, definition: PFMSDefinition, rule):
         definition = self._get_path_param(definition, rule)
         definition.methods = self._get_action_methods(rule)

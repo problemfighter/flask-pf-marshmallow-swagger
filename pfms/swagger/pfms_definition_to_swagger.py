@@ -5,7 +5,7 @@ from pfms.pfapi.rr.api_response import bulk_success_data_response_def, data_resp
 from pfms.pfapi.rr.base_response import MessageResponse, ErrorResponse
 from pfms.swagger.pfms_definition import PFMSDefinition
 from pfms.common.pfms_util import get_random_string
-from pfms.swagger.pfms_swagger_cons import MESSAGE_RESPONSE, ERROR_DETAILS_RESPONSE
+from pfms.swagger.pfms_swagger_cons import MESSAGE_RESPONSE, ERROR_DETAILS_RESPONSE, MULTIPART_FORM_DATA
 from pfms.swagger.pfms_swagger_schemas import get_parameter, IN_QUERY, IN_PATH, get_request_body, get_response
 
 
@@ -34,6 +34,11 @@ class PFMSDefinitionToSwagger:
             return True
         return False
 
+    def _is_binary_upload_request(self, content_type: str):
+        if content_type.startswith("BINARY_UPLOAD"):
+            return True
+        return False
+
     def _is_list_response(self, content_type: str):
         if content_type.endswith("LIST"):
             return True
@@ -46,7 +51,9 @@ class PFMSDefinitionToSwagger:
 
     def add_request_response_schema(self, definition: PFMSDefinition):
         if definition.request_body:
-            if self._is_bulk_request(definition.rr_type):
+            if self._is_binary_upload_request(definition.rr_type):
+                req = definition.request_body
+            elif self._is_bulk_request(definition.rr_type):
                 req = bulk_request(definition.request_body)
             else:
                 req = single_request(definition.request_body)
@@ -87,8 +94,10 @@ class PFMSDefinitionToSwagger:
         return None
 
     def get_request_body(self, definition: PFMSDefinition):
+        if self._is_binary_upload_request(definition.rr_type):
+            definition.request_type = MULTIPART_FORM_DATA
         if definition.request_body:
-            return get_request_body(definition, self._is_bulk_request(definition.request_type))
+            return get_request_body(definition, self._is_bulk_request(definition.rr_type))
         return None
 
     def get_responses(self, definition: PFMSDefinition):

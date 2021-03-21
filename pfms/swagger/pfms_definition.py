@@ -1,11 +1,13 @@
+from pfms.swagger.pfms_swagger_cons import APPLICATION_JSON
+
 
 class PFMSDefinition:
     url: str = None
     path_params = None
     request_body = None
     response_obj = None
-    response_type = 'application/json'
-    request_type = 'application/json'
+    response_type = APPLICATION_JSON
+    request_type = APPLICATION_JSON
     response_exclude = None
     request_exclude = None
     query_param = None

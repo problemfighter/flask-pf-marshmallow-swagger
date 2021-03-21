@@ -5,16 +5,12 @@ from apispec.ext.marshmallow import MarshmallowPlugin
 from pfms.common.pfms_exception import PfMsException
 from pfms.pfapi.rr.pfms_response_processor import pf_response
 from pfms.swagger.pfms_actions_to_definition import ActionsToSwagger
+from pfms.swagger.pfms_swagger_api_spec import pfms_swagger_api_spec
 
 
 class PFMarshmallowSwagger:
 
-    _api_specification = APISpec(
-        title="PF Marshmallow Swagger",
-        version="1.0.0",
-        openapi_version="3.0.2",
-        plugins=[MarshmallowPlugin()]
-    )
+    _api_specification = pfms_swagger_api_spec
 
     def __init__(self, app=None):
         self.app = app
