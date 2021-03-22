@@ -39,3 +39,6 @@ class PfRequestResponse:
 
     def json_list_response(self):
         pass
+
+    def upload_request_preocess(self, pf_schema: PfBaseSchema, existing_instance=None):
+        return request_processor.upload_request_validate(pf_schema, existing_instance)
