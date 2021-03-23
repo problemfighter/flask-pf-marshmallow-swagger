@@ -23,11 +23,37 @@ class PfRequestProcessor:
             return data
         return None
 
+    def query_params(self):
+        data = request.args
+        if data:
+            return data
+        return None
+
     def file_data(self):
         files = request.files
         if files:
             return files
         return None
+
+    def get_requested_value(self, key, default=None):
+        value = self.get_query_param_value(key, default)
+        if not value:
+            value = self.get_requested_data_value(key, default)
+        if value:
+            return value
+        return default
+
+    def get_query_param_value(self, key, default=None):
+        args = self.query_params()
+        if args and key in args:
+            return args.get(key)
+        return default
+
+    def get_requested_data_value(self, key, default=None):
+        data = self.get_request_data()
+        if data and key in data:
+            return data.get(key, default)
+        return default
 
     def get_request_data(self):
         json = self.json_data()

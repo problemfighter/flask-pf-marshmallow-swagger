@@ -1,7 +1,5 @@
 from common.pff_common_exception import PFFCommonException
 from flask import Blueprint, render_template
-from apispec import APISpec
-from apispec.ext.marshmallow import MarshmallowPlugin
 from pfms.common.pfms_exception import PfMsException
 from pfms.pfapi.rr.pfms_response_processor import pf_response
 from pfms.swagger.pfms_actions_to_definition import ActionsToSwagger
