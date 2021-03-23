@@ -1,5 +1,5 @@
 from flask import request
-from marshmallow import ValidationError
+from marshmallow import ValidationError, EXCLUDE
 from pfms.common.pfms_exception import PfMsException
 from pfms.pfapi.base.pfms_base_schema import PfBaseSchema
 from pfms.pfapi.pfms_cons import VALIDATION_ERROR_CODE, VALIDATION_ERROR_MSG, INVALID_VALIDATION_REQUEST_MSG
@@ -69,7 +69,7 @@ class PfRequestProcessor:
 
     def request_validate(self, data, pf_schema: PfBaseSchema, existing_instance=None):
         try:
-            return pf_schema.load(data, session=session, instance=existing_instance)
+            return pf_schema.load(data, session=session, instance=existing_instance, unknown=EXCLUDE)
         except ValidationError as error:
             error_dic = self._process_validation_error(error)
             error_exception = pf_response.error_response(errors=error_dic, code=VALIDATION_ERROR_CODE, message=VALIDATION_ERROR_MSG)
