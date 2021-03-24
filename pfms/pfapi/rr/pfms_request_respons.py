@@ -1,5 +1,6 @@
 from pfms.common.pfms_exception import PfMsException
 from pfms.pfapi.base.pfms_base_schema import PfBaseSchema
+from pfms.pfapi.pfms_cons import SUCCESS_CODE, ERROR_CODE
 from pfms.pfapi.rr.pfms_request_processor import PfRequestProcessor
 from pfms.pfapi.rr.pfms_response_processor import PfResponseProcessor
 
@@ -42,3 +43,9 @@ class PfRequestResponse:
 
     def upload_request_preocess(self, pf_schema: PfBaseSchema, existing_instance=None):
         return request_processor.upload_request_validate(pf_schema, existing_instance)
+
+    def success(self, message, code=SUCCESS_CODE):
+        return response_processor.success(message, code)
+
+    def error(self, message, code=ERROR_CODE):
+        return response_processor.error(message, code)
