@@ -44,7 +44,7 @@ def simple_get(response_obj, query_param=None):
 
 
 def pfms_create(request_body, response_obj=None, only_message=True):
-    return request_response(CREATE, request_body, response_obj, only_message)
+    return request_response(CREATE, request_body, response_obj, only_message=only_message)
 
 
 def pfms_details(response_obj):
