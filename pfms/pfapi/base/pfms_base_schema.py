@@ -30,3 +30,9 @@ def common_exclude_append(*args):
     list_args = list(args)
     list_args.extend(common_exclude())
     return list_args
+
+
+def update_exclude_append(*args):
+    list_args = list(args)
+    list_args.extend(update_exclude())
+    return list_args
