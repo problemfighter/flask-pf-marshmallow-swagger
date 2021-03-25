@@ -98,12 +98,15 @@ class PfRequestProcessor:
         pagination = self.pagination_params()
         return model.paginate(page=pagination['page'], per_page=pagination['per_page'], error_out=False)
 
+    def get_search_string(self):
+        return self.get_requested_value("search")
+
     def add_order_by(self, model, default_field="id", default_order="desc"):
-        sort_field = request.args.get("sort_field")
+        sort_field = self.get_requested_value("sort_field")
         if not sort_field:
             sort_field = default_field
 
-        sort_order = request.args.get("sort_order")
+        sort_order = self.get_requested_value("sort_order")
         if not sort_order:
             sort_order = default_order
         elif sort_order and (sort_order != "asc" and sort_order != "desc"):
