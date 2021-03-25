@@ -49,6 +49,12 @@ class PfRequestProcessor:
             return args.get(key)
         return default
 
+    def get_required_query_param_value(self, key, message: str = "Invalid query params", default=None):
+        value = self.get_query_param_value(key, default)
+        if not value:
+            raise PfMsException(message=message)
+        return value
+
     def get_requested_data_value(self, key, default=None):
         data = self.get_request_data()
         if data and key in data:
