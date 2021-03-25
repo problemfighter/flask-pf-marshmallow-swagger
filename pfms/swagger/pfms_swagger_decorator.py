@@ -55,6 +55,10 @@ def pfms_delete():
     return request_response(rr_type=DELETE, error_details=False, only_message=True)
 
 
+def pfms_restore():
+    return request_response(rr_type=DELETE, error_details=False, only_message=True)
+
+
 def bulk_create(request_body, response_obj):
     return request_response(BULK_CREATE, request_body, response_obj)
 
@@ -80,6 +84,7 @@ def pfms_pagination_sort_search_list(response_obj, query_param: list = None):
         query_param = []
     query_param.append(("search", string))
     return pfms_pagination_sort_list(response_obj, query_param)
+
 
 def pfms_binary_upload(request_body, response_obj):
     return request_response(BINARY_UPLOAD, request_body, response_obj)
