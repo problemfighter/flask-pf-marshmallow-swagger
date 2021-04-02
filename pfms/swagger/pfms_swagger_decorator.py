@@ -74,8 +74,8 @@ def pfms_pagination_list(response_obj, query_param: list = None):
 def pfms_pagination_sort_list(response_obj, query_param: list = None):
     if not query_param:
         query_param = []
-    query_param.append(("sort_field", string))
-    query_param.append(("sort_order", string))
+    query_param.append(("sort-field", string))
+    query_param.append(("sort-order", string))
     return pfms_pagination_list(response_obj, query_param)
 
 
