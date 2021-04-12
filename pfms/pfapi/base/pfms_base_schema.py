@@ -1,3 +1,4 @@
+from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 from pf_sqlalchemy.db.orm import BaseModel
 
@@ -14,6 +15,11 @@ class PfDetailBaseSchema(PfBaseSchema):
     created = auto_field()
     updated = auto_field()
     uuid = auto_field()
+
+
+class ModelViewSort(Schema):
+    id = fields.Integer(required=True, error_messages={"required": "Please enter entity id."})
+    viewOrder = fields.Integer(required=True, error_messages={"required": "Please enter view order."})
 
 
 def common_exclude():

@@ -31,8 +31,8 @@ def request_response(rr_type,
     return decorator
 
 
-def pfms_post_request(request_body, response_obj):
-    return request_response(POST, request_body, response_obj)
+def pfms_post_request(request_body, response_obj=None, only_message=False):
+    return request_response(POST, request_body, response_obj, only_message=only_message)
 
 
 def request_response_list(request_body, response_obj):

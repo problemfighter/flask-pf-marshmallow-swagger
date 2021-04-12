@@ -55,6 +55,12 @@ class PfRequestProcessor:
             raise PfMsException(message=message)
         return value
 
+    def get_required_data_value(self, key, message: str = "Invalid data params", default=None):
+        value = self.get_requested_data_value(key, default)
+        if not value:
+            raise PfMsException(message=message)
+        return value
+
     def get_requested_data_value(self, key, default=None):
         data = self.get_request_data()
         if data and key in data:
