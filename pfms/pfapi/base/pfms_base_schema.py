@@ -3,6 +3,10 @@ from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 from pf_sqlalchemy.db.orm import BaseModel
 
 
+class PfOnlySchema(Schema):
+    pass
+
+
 class PfBaseSchema(SQLAlchemySchema):
     pass
 
