@@ -62,6 +62,13 @@ class PfResponseProcessor:
         response.add_data(data_list_dic, many)
         return self.json_response(response, False)
 
+    def dictionary_data_response(self, data_dict, many=False):
+        response: DataResponse = DataResponse()
+        response.status = SUCCESS
+        response.code = SUCCESS_CODE
+        response.add_data(data_dict, many)
+        return self.json_response(response, many)
+
     def bulk_data_response(self, data, pf_schema: PfBaseSchema = None):
         return self._data_response(data, True, pf_schema)
 
