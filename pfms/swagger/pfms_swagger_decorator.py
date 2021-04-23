@@ -35,7 +35,7 @@ def pfms_post_request(request_body, response_obj=None, only_message=False):
     return request_response(POST, request_body, response_obj, only_message=only_message)
 
 
-def request_response_list(request_body, response_obj):
+def request_response_list(request_body=None, response_obj=None):
     return request_response(LIST, request_body, response_obj)
 
 

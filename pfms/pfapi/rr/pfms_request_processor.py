@@ -1,5 +1,6 @@
 from flask import request
 from marshmallow import ValidationError, EXCLUDE
+from pf_file_content.pf_string_util import process_file_name
 from pfms.common.pfms_exception import PfMsException
 from pfms.pfapi.base.pfms_base_schema import PfBaseSchema
 from pfms.pfapi.pfms_cons import VALIDATION_ERROR_CODE, VALIDATION_ERROR_MSG, INVALID_VALIDATION_REQUEST_MSG
@@ -125,7 +126,7 @@ class PfRequestProcessor:
         name_and_file_dic = self.get_uploaded_file_name(file_names)
         if name_and_file_dic:
             for file_name in name_and_file_dic:
-                form_data[file_name] = name_and_file_dic[file_name]
+                form_data[file_name] = process_file_name(name_and_file_dic[file_name])
         return form_data
 
     def upload_request_validate(self, pf_schema: PfBaseSchema, existing_instance=None):

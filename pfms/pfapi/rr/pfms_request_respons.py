@@ -38,8 +38,8 @@ class PfRequestResponse:
     def json_pagination_response(self, model_paginated, pf_schema: PfBaseSchema):
         return response_processor.paginated_data_response(model_paginated, pf_schema)
 
-    def json_list_response(self):
-        pass
+    def json_list_response(self, data, pf_schema: PfBaseSchema):
+        return response_processor.data_list_response(data, pf_schema)
 
     def upload_request_preocess(self, pf_schema: PfBaseSchema, existing_instance=None):
         return request_processor.upload_request_validate(pf_schema, existing_instance)

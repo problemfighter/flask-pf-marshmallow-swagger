@@ -72,6 +72,9 @@ class PfResponseProcessor:
     def bulk_data_response(self, data, pf_schema: PfBaseSchema = None):
         return self._data_response(data, True, pf_schema)
 
+    def data_list_response(self, data, pf_schema: PfBaseSchema):
+        return self._data_response(data, True, pf_schema)
+
     def paginated_data_response(self, data, pf_schema: PfBaseSchema = None):
         pagination = Pagination()
         pagination.page = data.page
