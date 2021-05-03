@@ -6,7 +6,6 @@ from pfms.pfapi.base.pfms_base_schema import PfBaseSchema
 from pfms.pfapi.pfms_cons import VALIDATION_ERROR_CODE, VALIDATION_ERROR_MSG, INVALID_VALIDATION_REQUEST_MSG
 from pfms.pfapi.rr.pfms_response_processor import pf_response
 from pfms.swagger.pfms_swagger_api_spec import FileUpload
-from sqlalchemy import text
 from sqlalchemy.orm import session
 
 
@@ -114,7 +113,7 @@ class PfRequestProcessor:
         if names:
             files = self.file_data()
             for name in names:
-                if name in files:
+                if files and name in files:
                     if files[name].filename != '':
                         name_and_filename[name] = files[name].filename
         return name_and_filename
@@ -129,6 +128,14 @@ class PfRequestProcessor:
                 form_data[file_name] = process_file_name(name_and_file_dic[file_name])
         return form_data
 
+    def remove_null(self, form_data):
+        if form_data:
+            for key in form_data:
+                if key and form_data[key] == 'null':
+                    form_data[key] = None
+        return form_data
+
     def upload_request_validate(self, pf_schema: PfBaseSchema, existing_instance=None):
         form_data = self._adjust_file_name_with_request(pf_schema)
+        form_data = self.remove_null(form_data)
         return self.request_validate(form_data, pf_schema, existing_instance)
