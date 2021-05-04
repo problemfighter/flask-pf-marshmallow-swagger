@@ -19,7 +19,6 @@ class PfDetailBaseSchema(PfBaseSchema):
     created = auto_field()
     updated = auto_field()
     uuid = auto_field()
-    isActive = auto_field()
 
 
 class ModelViewSort(Schema):
