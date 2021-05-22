@@ -29,6 +29,12 @@ class PfRequestProcessor:
             return data
         return None
 
+    def query_array_param(self, key, default=None, type=None):
+        data = request.args.getlist(key, type)
+        if data:
+            return data
+        return default
+
     def file_data(self):
         files = request.files
         if files:
@@ -43,14 +49,16 @@ class PfRequestProcessor:
             return value
         return default
 
-    def get_query_param_value(self, key, default=None, type=None):
+    def get_query_param_value(self, key, default=None, type=None, is_list=False):
+        if is_list:
+            return self.query_array_param(key, default, type)
         args = self.query_params()
         if args and key in args:
             return args.get(key, type=type)
         return default
 
-    def get_required_query_param_value(self, key, message: str = "Invalid query params", default=None):
-        value = self.get_query_param_value(key, default)
+    def get_required_query_param_value(self, key, message: str = "Invalid query params", default=None, is_list=False):
+        value = self.get_query_param_value(key, default, is_list=is_list)
         if not value:
             raise PfMsException(message=message)
         return value
