@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='flask-pf-marshmallow-swagger',
-    version='1.2',
+    version='1.3',
     url='https://github.com/problemfighter/flask-pf-marshmallow-swagger',
     license='Apache 2.0',
     author='Touhid Mia',
