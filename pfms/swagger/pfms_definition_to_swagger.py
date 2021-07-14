@@ -39,6 +39,11 @@ class PFMSDefinitionToSwagger:
             return True
         return False
 
+    def _is_form_request(self, content_type: str):
+        if content_type.startswith("POST_FORM"):
+            return True
+        return False
+
     def _is_list_response(self, content_type: str):
         if content_type.endswith("LIST"):
             return True
@@ -51,7 +56,7 @@ class PFMSDefinitionToSwagger:
 
     def add_request_response_schema(self, definition: PFMSDefinition):
         if definition.request_body:
-            if self._is_binary_upload_request(definition.rr_type):
+            if self._is_binary_upload_request(definition.rr_type) or self._is_form_request(definition.rr_type):
                 req = definition.request_body
             elif self._is_bulk_request(definition.rr_type):
                 req = bulk_request(definition.request_body)
@@ -94,7 +99,7 @@ class PFMSDefinitionToSwagger:
         return None
 
     def get_request_body(self, definition: PFMSDefinition):
-        if self._is_binary_upload_request(definition.rr_type):
+        if self._is_binary_upload_request(definition.rr_type) or self._is_form_request(definition.rr_type):
             definition.request_type = MULTIPART_FORM_DATA
         if definition.request_body:
             return get_request_body(definition, self._is_bulk_request(definition.rr_type))

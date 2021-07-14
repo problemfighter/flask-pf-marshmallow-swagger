@@ -3,7 +3,7 @@ from functools import wraps
 from pfms.common.pfms_data_type import integer, string
 from pfms.swagger.pfms_definition import PFMSDefinition
 from pfms.swagger.pfms_swagger_cons import CREATE_UPDATE, LIST, CREATE, SIMPLE_GET, BULK_CREATE, DETAILS, DELETE, \
-    PAGINATED_LIST, POST, BINARY_UPLOAD
+    PAGINATED_LIST, POST, BINARY_UPLOAD, POST_FORM, FORM_DATA
 
 
 def request_response(rr_type,
@@ -88,3 +88,7 @@ def pfms_pagination_sort_search_list(response_obj, query_param: list = None):
 
 def pfms_binary_upload(request_body, response_obj):
     return request_response(BINARY_UPLOAD, request_body, response_obj)
+
+
+def pfms_post_form(request_body, response_obj=None, only_message=True):
+    return request_response(POST_FORM, request_body, response_obj, request_type=FORM_DATA, only_message=only_message)
