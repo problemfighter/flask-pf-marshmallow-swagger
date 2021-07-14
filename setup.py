@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='flask-pf-marshmallow-swagger',
-    version='1.5',
+    version='1.6',
     url='https://github.com/problemfighter/flask-pf-marshmallow-swagger',
     license='Apache 2.0',
     author='Touhid Mia',
@@ -10,7 +10,7 @@ setup(
     description='This is Problem Fighter Flask Marshmallow Swagger Extension',
     long_description=__doc__,
     packages=find_packages(),
-    package_data={'': ['pfms/pf-marshmallow-swagger/**/*', 'pfms/templates/*']},
+    package_data={'pfms': ['pf-marshmallow-swagger/**/*', 'templates/*']},
     zip_safe=False,
     include_package_data=True,
     platforms='any',
