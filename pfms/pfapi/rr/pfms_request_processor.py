@@ -41,6 +41,26 @@ class PfRequestProcessor:
             return files
         return None
 
+    def get_value_from_request(self, key, default=None):
+        value = self.query_params()
+        if not value:
+            value = self.get_request_data()
+        if not value:
+            value = self.form_data()
+        if not value:
+            value = self.file_data()
+        if not value:
+            return default
+        if value and key in value:
+            return value.get(key)
+        return default
+
+    def get_required_value_from_request(self, key, message: str = "Invalid requested value", default=None):
+        value = self.get_value_from_request(key, default)
+        if not value:
+            raise PfMsException(message=message)
+        return value
+
     def get_requested_value(self, key, default=None, type=None):
         value = self.get_query_param_value(key, default, type)
         if not value:
