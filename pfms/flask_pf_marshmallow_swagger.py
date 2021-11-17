@@ -1,4 +1,4 @@
-from common.pff_common_exception import PFFCommonException
+from fpf_common.common.pff_common_exception import PFFCommonException
 from flask import Blueprint, render_template
 from pfms.common.pfms_exception import PfMsException
 from pfms.pfapi.rr.pfms_response_processor import pf_response
