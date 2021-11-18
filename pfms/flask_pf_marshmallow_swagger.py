@@ -30,7 +30,8 @@ class PFMarshmallowSwagger:
     def swagger_json(self):
         actions_to_swagger = ActionsToSwagger(self.app, self._api_specification)
         actions_to_swagger.process()
-        return self._api_specification.to_dict()
+        dictionary = self._api_specification.to_dict()
+        return actions_to_swagger.add_jwt_security(dictionary)
 
     def swagger_ui(self):
         return render_template('pf-swagger-ui.html')

@@ -92,3 +92,17 @@ class ActionsToSwagger:
     def process(self):
         self._process_url()
         return ""
+
+    def add_jwt_security(self, definition: dict):
+        if definition and isinstance(definition, dict):
+            definition['security'] = [{"bearerAuth": []}]
+            if "components" not in definition:
+                definition["components"] = {}
+            definition["components"]["securitySchemes"] = {
+                "bearerAuth": {
+                    "type": "http",
+                    "scheme": "bearer",
+                    "bearerFormat": "JWT"
+                }
+            }
+        return definition
