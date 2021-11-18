@@ -44,8 +44,8 @@ class PfRequestResponse:
     def upload_request_preocess(self, pf_schema: PfBaseSchema, existing_instance=None):
         return request_processor.upload_request_validate(pf_schema, existing_instance)
 
-    def success(self, message, code=SUCCESS_CODE):
-        return response_processor.success(message, code)
+    def success(self, message, code=SUCCESS_CODE, http_code=200):
+        return response_processor.success(message, code, http_code=http_code)
 
-    def error(self, message, code=ERROR_CODE):
-        return response_processor.error(message, code)
+    def error(self, message, code=ERROR_CODE, http_code=200):
+        return response_processor.error(message, code, http_code=http_code)

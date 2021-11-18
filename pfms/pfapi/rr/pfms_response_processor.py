@@ -16,8 +16,8 @@ class PfResponseProcessor:
         response.headers[CONTENT_TYPE] = APP_JSON
         return response
 
-    def json_response(self, response: BaseResponse, many=False):
-        return self.flask_json_response(response.json(many))
+    def json_response(self, response: BaseResponse, many=False, http_code=200):
+        return self.flask_json_response(response.json(many), code=http_code)
 
     def message_response(self, message, status, code) -> MessageResponse:
         response = MessageResponse()
@@ -26,11 +26,11 @@ class PfResponseProcessor:
         response.message = message
         return response
 
-    def success(self, message, code=SUCCESS_CODE):
-        return self.json_response(self.message_response(message, SUCCESS, code))
+    def success(self, message, code=SUCCESS_CODE, http_code=200):
+        return self.json_response(self.message_response(message, SUCCESS, code), http_code=http_code)
 
-    def error(self, message, code=ERROR_CODE):
-        return self.json_response(self.message_response(message, ERROR, code))
+    def error(self, message, code=ERROR_CODE, http_code=200):
+        return self.json_response(self.message_response(message, ERROR, code), http_code=http_code)
 
     def error_response(self, errors: dict, message=None, status=ERROR, code=ERROR_CODE):
         response = ErrorResponse()
