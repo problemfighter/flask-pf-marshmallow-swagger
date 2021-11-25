@@ -22,8 +22,8 @@ class PfRequestResponse:
     def json_data_response(self, model, pf_schema: PfBaseSchema):
         return response_processor.data_response(model, pf_schema)
 
-    def json_list_dic_data_response(self, data):
-        return response_processor.list_dic_data_response(data)
+    def json_list_dic_data_response(self, data, many=False):
+        return response_processor.list_dic_data_response(data, many)
 
     def json_validate_and_data_response(self, model, pf_schema: PfBaseSchema, message="Requested data is not available."):
         if not model:
