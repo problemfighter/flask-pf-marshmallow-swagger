@@ -101,19 +101,38 @@ class PfRequestProcessor:
             return json['data']
         return None
 
-    def validate_and_process(self, pf_schema: PfBaseSchema, existing_instance=None):
+    def validate_and_process(self, pf_schema: PfBaseSchema, existing_instance=None, is_validate_only: bool = False):
         request_data = self.get_request_data()
         if not request_data:
             raise PfMsException(message=INVALID_VALIDATION_REQUEST_MSG)
-        return self.request_validate(request_data, pf_schema, existing_instance)
+        return self.request_validate(request_data, pf_schema, existing_instance, is_validate_only)
 
-    def request_validate(self, data, pf_schema: PfBaseSchema, existing_instance=None):
+    def request_validate(self, data, pf_schema: PfBaseSchema, existing_instance=None, is_validate_only: bool = False):
         try:
-            return pf_schema.load(data, session=session, instance=existing_instance, unknown=EXCLUDE)
+            if is_validate_only:
+                response_model = pf_schema.validate(data, session=session)
+                if response_model:
+                    errors = self._process_only_validation_error(response_model)
+                    self._raise_validation_exception(errors)
+            else:
+                response_model = pf_schema.load(data, session=session, instance=existing_instance, unknown=EXCLUDE)
+            return response_model
         except ValidationError as error:
             error_dic = self._process_validation_error(error)
-            error_exception = pf_response.error_response(errors=error_dic, code=VALIDATION_ERROR_CODE, message=VALIDATION_ERROR_MSG)
-            raise PfMsException(error_response=error_exception)
+            self._raise_validation_exception(error_dic)
+
+    def _raise_validation_exception(self, errors: dict):
+        error_exception = pf_response.error_response(errors=errors, code=VALIDATION_ERROR_CODE, message=VALIDATION_ERROR_MSG)
+        raise PfMsException(error_response=error_exception)
+
+    def _process_only_validation_error(self, errors: dict):
+        message_dict: dict = {}
+        for message in errors:
+            error_text = ""
+            for text in errors[message]:
+                error_text += text + " "
+            message_dict[message] = error_text
+        return message_dict
 
     def _process_validation_error(self, error: ValidationError):
         message_dict: dict = {}
@@ -121,7 +140,7 @@ class PfRequestProcessor:
             for message in error.messages:
                 error_text = ""
                 for text in error.messages[message]:
-                    error_text += text
+                    error_text += text + " "
                 message_dict[message] = error_text
         return message_dict
 
