@@ -50,8 +50,8 @@ class PfRequestResponse:
     def error(self, message, code=ERROR_CODE, http_code=200):
         return response_processor.error(message, code, http_code=http_code)
 
-    def error_response(self, errors: dict, message=None, status=ERROR, code=ERROR_CODE):
+    def error_response(self, errors: dict, message="Validation Error", status=ERROR, code=ERROR_CODE):
         return response_processor.error_response(errors=errors, message=message, status=status, code=code)
 
     def get_requested_data_value(self, key, default=None):
-        return request_processor.get_requested_data_value(self, key, default)
+        return request_processor.get_requested_data_value(key, default)
