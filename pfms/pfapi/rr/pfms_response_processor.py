@@ -52,8 +52,8 @@ class PfResponseProcessor:
             response.add_pagination(pagination_string)
         return self.json_response(response, False)
 
-    def data_response(self, data, pf_schema: PfBaseSchema = None):
-        return self._data_response(data, False, pf_schema)
+    def data_response(self, data, pf_schema: PfBaseSchema = None, many=False):
+        return self._data_response(data, many, pf_schema)
 
     def list_dic_data_response(self, data_list_dic, many=False):
         response: DataResponse = DataResponse()

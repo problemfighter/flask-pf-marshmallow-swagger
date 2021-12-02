@@ -19,8 +19,8 @@ class PfRequestResponse:
     def json_request_process(self, pf_schema: PfBaseSchema, existing_instance=None, is_validate_only: bool = False):
         return request_processor.validate_and_process(pf_schema, existing_instance, is_validate_only)
 
-    def json_data_response(self, model, pf_schema: PfBaseSchema):
-        return response_processor.data_response(model, pf_schema)
+    def json_data_response(self, model, pf_schema: PfBaseSchema, many=False):
+        return response_processor.data_response(model, pf_schema, many=many)
 
     def json_list_dic_data_response(self, data, many=False):
         return response_processor.list_dic_data_response(data, many)
